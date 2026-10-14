@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triple-E Invoices</title>
+<meta name="theme-color" content="#05492e">
+<meta name="description" content="Cash sales invoice and receipt maker for Triple-E Food Planet. Creates a PDF to send to the customer.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Invoices">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="invoice.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <img src="assets/logo.png" alt="" width="40" height="40">
+    <div><b>Triple-E Invoices</b><span>Cash sales invoice / receipt</span></div>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <button data-view="new" class="on" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M13 2v6h6M12 12v6M9 15h6"/></svg>
+      <span>New invoice</span>
+    </button>
+    <button data-view="saved" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      <span>Saved</span>
+    </button>
+    <button data-view="settings" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <!-- NEW INVOICE -->
+  <section id="view-new" class="view on">
+    <div class="seg" role="tablist" aria-label="Edit or preview">
+      <button type="button" data-pane="edit" class="on" role="tab">Details</button>
+      <button type="button" data-pane="preview" role="tab">Preview</button>
+    </div>
+
+    <div class="split">
+      <form id="form" class="pane edit" autocomplete="off" novalidate>
+        <div class="card">
+          <div class="card-h"><h2>Invoice</h2><button type="button" id="btnNew" class="ghost sm">Start new</button></div>
+          <div class="row2">
+            <label class="fld"><span>Invoice No.</span><input id="f-no" inputmode="numeric"></label>
+            <label class="fld"><span>Date</span><input id="f-date" type="date"></label>
+          </div>
+          <label class="fld"><span>Customer name</span><input id="f-customer" autocapitalize="words" placeholder="Walk-in customer"></label>
+          <div class="row2">
+            <label class="fld"><span>Phone No.</span><input id="f-phone" type="tel" inputmode="tel"></label>
+            <label class="fld"><span>Address</span><input id="f-address" autocapitalize="words"></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Goods</h2><span class="hint" id="itemCount"></span></div>
+          <div id="items"></div>
+          <button type="button" id="btnAdd" class="add">+ Add item</button>
+          <datalist id="productList"></datalist>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>VAT and signatures</h2></div>
+          <div class="vatrow">
+            <label class="switch"><input type="checkbox" id="f-vatOn"><i></i><span>Add VAT</span></label>
+            <label class="fld inline" id="vatRateWrap"><span>Rate %</span><input id="f-vatRate" inputmode="decimal" value="7.5"></label>
+          </div>
+          <div class="sigrow">
+            <div>
+              <span class="lbl">Customer signature</span>
+              <div class="sigprev" id="custSigPrev"></div>
+              <div class="btns"><button type="button" class="ghost sm" id="btnCustSig">Sign</button><button type="button" class="ghost sm" id="btnCustClear" hidden>Clear</button></div>
+            </div>
+            <div>
+              <span class="lbl">Authorized signature</span>
+              <div class="sigprev" id="authSigPrev"></div>
+              <div class="btns"><button type="button" class="ghost sm" id="btnAuthSig">Set up</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card total-card">
+          <div><span>Total</span><b id="liveTotal">0.00</b></div>
+          <small id="liveWords"></small>
+        </div>
+      </form>
+
+      <div class="pane prev">
+        <div class="actions" id="actions">
+          <button type="button" class="btn" id="btnSave">Save</button>
+          <button type="button" class="btn alt" id="btnPdf">Download PDF</button>
+          <button type="button" class="btn main" id="btnShare">Share PDF</button>
+        </div>
+        <div class="pvwrap" id="pvWrap"><div id="pv"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVED -->
+  <section id="view-saved" class="view">
+    <div class="card sum" id="sumCard"></div>
+    <label class="fld search"><span class="sr">Search</span><input id="q" type="search" placeholder="Search by customer, phone or invoice number"></label>
+    <div id="savedList"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="view-settings" class="view">
+    <div class="card">
+      <div class="card-h"><h2>Printed on every invoice</h2></div>
+      <label class="fld"><span>Shop address</span><textarea id="s-address" rows="2"></textarea></label>
+      <label class="fld"><span>Phone numbers</span><input id="s-phones"></label>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Numbers</h2></div>
+      <div class="row2">
+        <label class="fld"><span>Next invoice No.</span><input id="s-next" inputmode="numeric"></label>
+        <label class="fld"><span>Default VAT %</span><input id="s-vat" inputmode="decimal"></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Backup</h2></div>
+      <p class="note">Invoices are stored on this phone. Save a backup file now and then, so you can restore them if the phone is changed or reset.</p>
+      <div class="btns">
+        <button type="button" class="ghost" id="btnExport">Save backup file</button>
+        <label class="ghost filebtn">Restore from backup<input type="file" id="fileImport" accept="application/json,.json" hidden></label>
+      </div>
+    </div>
+    <p class="note center" id="verNote"></p>
+  </section>
+</main>
+
+<dialog id="sigDlg">
+  <form method="dialog" class="sigbox" id="sigForm">
+    <h3 id="sigTitle">Sign here</h3>
+    <canvas id="sigCanvas" width="900" height="360" aria-label="Signature area"></canvas>
+    <div class="btns end">
+      <button type="button" class="ghost" id="sigClear">Clear</button>
+      <button type="button" class="ghost" id="sigCancel">Cancel</button>
+      <button type="button" class="btn main" id="sigOk">Use signature</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="stage" aria-hidden="true"></div>
+
+<script src="vendor/html2canvas.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="invoice.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
