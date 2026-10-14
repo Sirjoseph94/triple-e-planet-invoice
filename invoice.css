@@ -1,0 +1,99 @@
+/* Invoice sheet. Fixed design canvas: 853px wide, 1280px tall minimum.
+   Every measurement comes from the original printed design. */
+
+@font-face{font-family:"Montserrat";font-weight:400;src:url(fonts/montserrat-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:500;src:url(fonts/montserrat-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:600;src:url(fonts/montserrat-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:700;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:800;src:url(fonts/montserrat-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Semi Condensed";font-weight:500;src:url(fonts/barlow-semi-condensed-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Semi Condensed";font-weight:600;src:url(fonts/barlow-semi-condensed-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Semi Condensed";font-weight:800;src:url(fonts/barlow-semi-condensed-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Semi Condensed";font-weight:700;src:url(fonts/barlow-semi-condensed-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Kaushan Script";font-weight:400;src:url(fonts/kaushan-script-latin-400-normal.woff2) format("woff2")}
+
+.inv{
+  --g-dark:#05492e; --g-mid:#0b5a38; --g-ink:#123d2a; --g-line:#2f5f4d;
+  --yellow:#fcca04; --paper:#fcfefb;
+  position:relative; width:853px; min-height:1280px; box-sizing:border-box;
+  background:var(--paper); color:var(--g-ink);
+  font-family:"Montserrat",system-ui,sans-serif; overflow:hidden;
+  line-height:1;
+}
+.inv *{box-sizing:border-box}
+.inv .deco-top{position:absolute;left:0;top:0;width:853px;height:270px;pointer-events:none}
+.inv .deco-bot{position:absolute;left:0;bottom:0;width:853px;height:150px;pointer-events:none}
+
+/* header */
+.inv .hd{position:relative;height:262px}
+.inv .hd .logo{position:absolute;left:38px;top:18px;width:240px;height:240px}
+.inv .hd .vr{position:absolute;left:291px;top:30px;width:3px;height:218px;background:var(--g-dark)}
+.inv .hd .t1,.inv .hd .t2{position:absolute;left:316px;font-weight:800;color:var(--g-dark);white-space:nowrap;letter-spacing:-1.7px}
+.inv .hd .t1{top:47px;font-size:58.5px}
+.inv .hd .t2{top:100px;font-size:58.5px}
+.inv .hd .tag{position:absolute;left:318px;top:154px;width:420px;height:48px;display:flex;align-items:center;gap:14px}
+.inv .hd .tag i{flex:1;height:2px;background:var(--g-dark);display:block;margin-top:6px}
+.inv .hd .tag b{font-family:"Kaushan Script",cursive;font-weight:400;color:#f0b400;font-size:36px;white-space:nowrap}
+.inv .hd .l1,.inv .hd .l2{position:absolute;left:316px;width:430px;text-align:center;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:600;font-size:17.2px;letter-spacing:.7px;color:var(--g-ink);white-space:nowrap}
+.inv .hd .l1{top:201px}
+.inv .hd .l2{top:226px}
+
+/* banner */
+.inv .banner{position:relative;margin:1px 27px 0 27px;height:80px;border-radius:15px;background:var(--g-dark);
+  display:flex;align-items:center;padding-left:30px}
+.inv .banner h1{margin:0;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:800;font-size:46.5px;color:#fff;letter-spacing:0;white-space:nowrap}
+.inv .banner .thanks{position:absolute;right:16px;top:14px;width:150px;text-align:center;transform:rotate(-6deg);
+  font-family:"Kaushan Script",cursive;color:var(--yellow);font-size:19px;line-height:1.12}
+.inv .banner .thanks:after{content:"";display:block;height:3px;border-radius:3px;background:var(--yellow);margin:3px 6px 0 14px;transform:rotate(-2deg)}
+
+/* customer fields */
+.inv .fields{padding:11px 33px 0 33px}
+.inv .frow{display:flex;gap:60px;height:40.3px;align-items:center}
+.inv .f{display:flex;align-items:flex-end;flex:1;min-width:0;height:28px}
+.inv .f label{font-size:19.5px;font-weight:700;white-space:nowrap;padding-bottom:1px;color:var(--g-ink)}
+.inv .f .v{flex:1;min-width:0;margin-left:10px;border-bottom:1.5px solid var(--g-line);height:22px;
+  font-size:16.5px;font-weight:600;line-height:20px;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv .f.w1{flex:0 0 395px}
+.inv .f.w2{flex:1}
+
+/* goods table */
+.inv .tbl{position:relative;margin:8px 28px 0 28px;border:2px solid var(--g-dark);border-radius:13px;overflow:hidden;background:transparent}
+.inv .tr{display:grid;grid-template-columns:107px 389px 137px 1fr}
+.inv .th{height:42px;background:var(--g-dark);color:#fff;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:800;font-size:26px;letter-spacing:.2px}
+.inv .th>div{display:flex;align-items:center;justify-content:center;border-left:3px solid rgba(255,255,255,.28)}
+.inv .th>div:first-child{border-left:0}
+.inv .tb{position:relative}
+.inv .tb .wm{position:absolute;left:50%;top:50%;width:262px;height:262px;margin:-131px 0 0 -131px;opacity:.14;pointer-events:none}
+.inv .tb .tr{position:relative;min-height:33px;border-top:1px solid #8aa89d}
+.inv .tb .tr:first-of-type{border-top:0}
+.inv .tb .tr>div{display:flex;align-items:center;border-left:1.5px solid var(--g-dark);padding:6px 12px;font-size:16.5px;font-weight:500;line-height:1.25;color:var(--g-ink)}
+.inv .tb .tr>div:first-child{border-left:0;justify-content:center;padding:6px 4px}
+.inv .tb .tr>div:nth-child(3),.inv .tb .tr>div:nth-child(4){justify-content:flex-end;font-variant-numeric:tabular-nums}
+.inv .tb .tr>div:nth-child(2){justify-content:flex-start}
+
+/* totals */
+.inv .tot{margin:6px 28px 0 0;display:flex;flex-direction:column;align-items:flex-end;gap:4.5px}
+.inv .trow{width:336px;height:32px;display:grid;grid-template-columns:172px 1fr;border-radius:11px;overflow:hidden;border:2px solid var(--g-dark);background:#fff}
+.inv .trow .k{background:var(--g-dark);color:#fff;display:flex;align-items:center;padding-left:17px;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:700;font-size:21px;letter-spacing:.3px;margin:-2px 0 -2px -2px;padding-top:0}
+.inv .trow .k small{font-size:15px;font-weight:600;margin-left:5px}
+.inv .trow .n{display:flex;align-items:center;justify-content:flex-end;padding-right:12px;font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--g-ink)}
+.inv .trow.yl .k{background:var(--yellow);color:var(--g-dark)}
+
+/* amount in words */
+.inv .words{margin:9px 27px 0 28px;border:3px solid var(--yellow);border-radius:15px;background:linear-gradient(90deg,#f1fde9,#f3f9f5);padding:7px 26px 18px 27px}
+.inv .words b{display:block;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:700;font-size:22px;line-height:22px;letter-spacing:.3px;color:var(--g-dark)}
+.inv .words .line{margin-top:3px;min-height:20px;border-bottom:1.5px solid var(--g-line);font-size:16.5px;font-weight:600;line-height:1.15;padding:1px 2px 1px;color:var(--g-ink)}
+
+/* footer */
+.inv .ft{position:relative;margin:21px 0 110px 0;height:90px}
+.inv .ft .ic{position:absolute}
+.inv .ft .addr{position:absolute;left:75px;top:1px;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-size:19px;font-weight:500;line-height:24px;color:var(--g-ink);width:270px}
+.inv .ft .ph{position:absolute;left:76px;top:57px;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-size:19.5px;font-weight:700;color:var(--g-ink);white-space:nowrap;line-height:24px}
+.inv .ft .vr2{position:absolute;left:351px;top:2px;width:2px;height:83px;background:var(--g-ink)}
+.inv .sig{position:absolute;top:0;width:202px;height:90px}
+.inv .sig .pad{position:absolute;left:0;right:0;bottom:40px;height:56px;display:flex;align-items:flex-end;justify-content:center}
+.inv .sig .pad img{max-height:56px;max-width:190px;object-fit:contain}
+.inv .sig .ln{position:absolute;left:0;right:0;top:52px;border-top:1.5px solid var(--g-ink)}
+.inv .sig span{position:absolute;left:0;right:0;top:62px;text-align:center;font-family:"Barlow Semi Condensed","Montserrat",sans-serif;font-weight:500;font-size:17px;color:var(--g-ink)}
+.inv .sig.cu{left:377px}
+.inv .sig.au{left:611px}
